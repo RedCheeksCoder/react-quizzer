@@ -1,13 +1,18 @@
 import "./App.css";
-import MainComponent from "./MainComponent";
-import Header from "./Header";
+import MainComponent from "./components/MainComponent";
+import Header from "./components/Header";
 import { useEffect, useReducer } from "react";
+import Loader from "./components/Loader";
+import Start from "./components/Start";
+import Questions from "./components/Questions";
 
 const InitialState = {
   questions: [],
 
   //loading, ready, error, active, finished
   status: "loading",
+  index: 0,
+  answer: null,
 };
 
 function reducer(state, action) {
@@ -16,13 +21,22 @@ function reducer(state, action) {
       return { ...state, questions: action.payload, status: "ready" };
     case "dataFail":
       return { ...state, status: "error" };
+    case "start":
+      return { ...state, status: "active" };
+    case "newAnswer":
+      return { ...state, answer: action.payload };
     default:
       throw new Error("Action unknown.");
   }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, InitialState);
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
+    reducer,
+    InitialState
+  );
+
+  const numOfQuestions = questions.length;
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
@@ -34,8 +48,18 @@ function App() {
     <div className="app">
       <Header />
       <MainComponent>
-        <p>1/15</p>
-        <p>Jesus is Lord ❤</p>
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" && (
+          <Start numOfQuestions={numOfQuestions} dispatch={dispatch} />
+        )}
+        {status === "active" && (
+          <Questions
+            questions={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+        )}
       </MainComponent>
     </div>
   );
