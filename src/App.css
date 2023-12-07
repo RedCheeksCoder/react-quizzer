@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
+
 :root {
   --color-darkest: #343a40;
   --color-dark: #495057;
@@ -7,8 +9,6 @@
   --color-theme: #1098ad;
   --color-accent: #ffa94d;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
 
 * {
   margin: 0;
@@ -37,7 +37,7 @@ body {
 }
 
 .main {
-  width: 50rem;
+  width: 60rem;
 }
 
 .app-header {
@@ -87,8 +87,14 @@ h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1rem;
+  width: ;
 }
 
+.start p {
+  font-size: 2rem;
+  padding-bottom: 10px;
+}
 .progress {
   margin-bottom: 4rem;
   display: grid;
